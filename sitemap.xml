@@ -1,21 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+
+    // 1. Check if Google is asking for the sitemap
+    if (url.pathname === "/sitemap.xml") {
+      const sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://findflower.gt.tc/</loc>
-  </url>
-  <url>
-    <loc>https://findflower.gt.tc/try.html</loc>
-  </url>
-  <url>
-    <loc>https://findflower.gt.tc/how.html</loc>
-  </url>
-  <url>
-    <loc>https://findflower.gt.tc/terms.html</loc>
-  </url>
-  <url>
-    <loc>https://findflower.gt.tc/api.html</loc>
-  </url>
-  <url>
-    <loc>https://findflower.gt.tc/contact.html</loc>
-  </url>
-</urlset>
+  <url><loc>https://findflower.gt.tc/</loc></url>
+  <url><loc>https://findflower.gt.tc/try.html</loc></url>
+  <url><loc>https://findflower.gt.tc/how.html</loc></url>
+  <url><loc>https://findflower.gt.tc/terms.html</loc></url>
+  <url><loc>https://findflower.gt.tc/api.html</loc></url>
+  <url><loc>https://findflower.gt.tc/contact.html</loc></url>
+</urlset>`;
+
+      // Return the XML with the correct header so Google knows it's a map
+      return new Response(sitemapXML, {
+        status: 200,
+        headers: {
+          "Content-Type": "application/xml;charset=UTF-8",
+        },
+      });
+    }
+
+    // 2. Handle your normal website traffic here
+    return new Response("This is the main website", { status: 200 });
+  },
+};
